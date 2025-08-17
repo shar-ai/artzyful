@@ -1,0 +1,1646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artzyful - Transform Your Pet</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .upload-section {
+            padding: 40px;
+            text-align: center;
+        }
+
+
+
+        .upload-area {
+            border: 3px dashed #667eea;
+            border-radius: 15px;
+            padding: 40px;
+            margin: 20px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .upload-area:hover {
+            border-color: #764ba2;
+            background: rgba(118, 75, 162, 0.05);
+        }
+
+        .upload-area.dragover {
+            border-color: #764ba2;
+            background: rgba(118, 75, 162, 0.1);
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .upload-text {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .upload-subtext {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        #imageFile {
+            display: none;
+        }
+
+        .preview-section {
+            padding: 20px 40px;
+            display: none;
+        }
+
+        .preview-container {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .preview-image {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .preview-info {
+            text-align: left;
+        }
+
+        .preview-info h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .preview-info p {
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .styles-section {
+            padding: 40px;
+            background: #f8f9fa;
+        }
+
+        .styles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .style-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 3px solid transparent;
+        }
+
+        .style-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .style-card.selected {
+            border-color: #764ba2;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        }
+
+        .style-example {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .style-preview {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+        
+        .style-card:hover .style-preview {
+            transform: scale(1.05);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .style-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+
+
+
+
+        .style-time {
+            background: #667eea;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-block;
+        }
+
+        .generate-section {
+            padding: 40px;
+            text-align: center;
+        }
+
+        .generate-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .generate-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result-section {
+            padding: 40px;
+            display: none;
+        }
+
+        .result-container {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .image-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .result-image {
+            width: 300px;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .watermark-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .watermark-text {
+            font-size: 3rem;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.8);
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+            letter-spacing: 0.2em;
+            white-space: nowrap;
+            opacity: 0.3;
+            transform: rotate(-45deg);
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 20px;
+            border-radius: 8px;
+        }
+
+        .result-container {
+            position: relative;
+        }
+
+        .result-info {
+            text-align: left;
+            max-width: 400px;
+        }
+
+        .result-title {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .result-details {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .progress-container {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto 20px;
+            background: #f0f0f0;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            height: 20px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 25px;
+            width: 0%;
+            transition: width 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .loading-text {
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .loading-time {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .error {
+            background: #ff6b6b;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .success {
+            background: #51cf66;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        /* Post-generation options styles */
+        .post-generation-options {
+            margin-top: 30px;
+            padding: 30px;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 15px;
+            border: 2px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .options-title {
+            font-size: 1.4rem;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .preview-info {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .preview-info p {
+            margin: 5px 0;
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        .download-section {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .download-section.locked {
+            opacity: 0.6;
+        }
+
+        .lock-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .lock-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .lock-overlay p {
+            color: white;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .purchase-section {
+            margin-top: 25px;
+        }
+
+        .purchase-title {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .download-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .download-btn {
+            position: relative;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+            min-width: 180px;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(102, 126, 234, 0.4);
+        }
+
+        .download-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #fff, #fff);
+            border-radius: 0 0 25px 25px;
+            animation: loading 2s ease-in-out infinite;
+            width: 0%;
+        }
+
+        @keyframes loading {
+            0% { width: 0%; }
+            50% { width: 100%; }
+            100% { width: 0%; }
+        }
+
+        .more-styles-section {
+            text-align: center;
+        }
+
+        .divider {
+            color: #666;
+            font-size: 0.9rem;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 30%;
+            height: 1px;
+            background: #ddd;
+        }
+
+        .divider::before {
+            left: 0;
+        }
+
+        .divider::after {
+            right: 0;
+        }
+
+        .purchase-options {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .purchase-btn {
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            min-width: 180px;
+        }
+
+        .purchase-btn.single {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        .purchase-btn.bundle {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            box-shadow: 0 8px 16px rgba(255, 107, 107, 0.3);
+        }
+
+        .purchase-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .purchase-btn.single:hover {
+            box-shadow: 0 12px 24px rgba(102, 126, 234, 0.4);
+        }
+
+        .purchase-btn.bundle:hover {
+            box-shadow: 0 12px 24px rgba(255, 107, 107, 0.4);
+        }
+
+        .price {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .features {
+            font-size: 0.75rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        /* Confetti popup */
+        .confetti-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 25px;
+            box-shadow: 0 25px 50px rgba(102, 126, 234, 0.4);
+            padding: 40px;
+            text-align: center;
+            z-index: 1000;
+            animation: popupSlideIn 0.6s ease-out;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        /* Enhanced confetti container */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 998;
+            overflow: hidden;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ff6b6b;
+            animation: confettiExplosion 3s ease-out forwards;
+            border-radius: 2px;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .popup-emoji {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .popup-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .popup-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            opacity: 0.9;
+        }
+
+        .popup-features {
+            margin: 25px 0;
+        }
+
+        .feature {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin: 8px 0;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .popup-button {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .popup-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        @keyframes popupSlideIn {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+
+
+        .confetti:nth-child(2n) {
+            background: #4ecdc4;
+        }
+
+        .confetti:nth-child(3n) {
+            background: #45b7d1;
+        }
+
+        .confetti:nth-child(4n) {
+            background: #96ceb4;
+        }
+
+        .confetti:nth-child(5n) {
+            background: #feca57;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes confettiExplosion {
+            0% {
+                transform: translate(0, 0) scale(0) rotate(0deg);
+                opacity: 1;
+            }
+            10% {
+                transform: translate(var(--x), var(--y)) scale(1) rotate(36deg);
+                opacity: 1;
+            }
+            90% {
+                transform: translate(calc(var(--x) * 2), calc(var(--y) * 2)) scale(0.8) rotate(324deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(calc(var(--x) * 3), calc(var(--y) * 3)) scale(0) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .styles-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .preview-container,
+            .result-container {
+                flex-direction: column;
+            }
+        }
+
+        /* Footer Styles */
+        .footer {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            margin-top: 60px;
+            border-radius: 20px 20px 0 0;
+            overflow: hidden;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .footer-section h4 {
+            color: #ecf0f1;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .footer-tagline {
+            color: #bdc3c7;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #bdc3c7;
+            text-decoration: none;
+            padding: 12px;
+            transition: all 0.3s ease;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            width: 50px;
+            height: 50px;
+        }
+
+        .social-link:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .social-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-link {
+            color: #bdc3c7;
+            text-decoration: none;
+            padding: 8px 0;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+        }
+
+        .footer-link:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+            padding-left: 10px;
+        }
+
+        .footer-bottom {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-bottom-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .copyright {
+            color: #95a5a6;
+            font-size: 0.9rem;
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-bottom-link {
+            color: #95a5a6;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-bottom-link:hover {
+            color: #667eea;
+        }
+
+        .admin-link {
+            opacity: 0.6;
+            font-size: 0.8rem;
+        }
+
+        .admin-link:hover {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .footer-bottom-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-bottom-links {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎨 Artzyful</h1>
+            <p>Transform your pet into a vintage masterpiece</p>
+            <a href="/admin-login.html" style="position: absolute; top: 20px; right: 20px; color: white; text-decoration: none; font-size: 0.9rem; opacity: 0.8; background: rgba(255,255,255,0.1); padding: 8px 12px; border-radius: 20px;">🔧 Admin</a>
+        </div>
+
+        <div class="upload-section">
+            <div class="upload-area" onclick="document.getElementById('imageFile').click()">
+                <div class="upload-icon">📸</div>
+                <div class="upload-text">Click to upload your pet's photo</div>
+                <div class="upload-subtext">or drag and drop here</div>
+            </div>
+            <input type="file" id="imageFile" accept="image/*">
+            
+
+        </div>
+
+        <div class="preview-section" id="previewSection">
+            <div class="preview-container">
+                <img id="previewImage" class="preview-image" alt="Preview">
+                <div class="preview-info">
+                    <h3>Your Pet</h3>
+                    <p>Ready to be transformed!</p>
+                    <p>Choose a style below to get started.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="styles-section">
+            <h2 style="text-align: center; margin-bottom: 30px; color: #333;">Choose Your Style</h2>
+            
+            <div class="generation-limit" style="text-align: center; margin-bottom: 20px;">
+                <span class="limit-indicator" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 8px 16px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;">
+                    🎨 Free Generations: <span id="generationCount">0</span>/3
+                </span>
+            </div>
+            <div class="styles-grid">
+                <div class="style-card" data-style="get-naked">
+                    <div class="style-example">
+                        <img src="images/get-naked-example.png" alt="Get Naked Example" class="style-preview">
+                    </div>
+                    <div class="style-title">Get Naked</div>
+                </div>
+
+                <div class="style-card" data-style="fluff-and-fabulous">
+                    <div class="style-example">
+                        <img src="images/fluff-fabulous-example.png" alt="Fluff & Fabulous Example" class="style-preview">
+                    </div>
+                    <div class="style-title">Fluff & Fabulous</div>
+                </div>
+
+                <div class="style-card" data-style="purr-my-bubbles">
+                    <div class="style-example">
+                        <img src="images/purr-bubbles-example.png" alt="Purr My Bubbles Example" class="style-preview">
+                    </div>
+                    <div class="style-title">Purr My Bubbles</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="generate-section">
+            <button class="generate-btn" id="generateBtn" disabled>
+                🎨 Generate Your Pet's Portrait
+            </button>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="loading-text">🎨 Creating Your Masterpiece...</div>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <div class="loading-time">⏱️ This usually takes 30-60 seconds</div>
+        </div>
+
+        <div class="error" id="error"></div>
+        <div class="success" id="success"></div>
+
+        <div class="result-section" id="resultSection">
+            <div class="result-container">
+                <div class="image-wrapper">
+                    <img id="resultImage" class="result-image" alt="Generated Image">
+                    
+                    <!-- Watermark overlay -->
+                    <div class="watermark-overlay">
+                        <div class="watermark-text">PREVIEW</div>
+                    </div>
+                </div>
+                
+                <div class="result-info">
+                    <div class="result-title">Your Pet's Portrait</div>
+                    <div class="result-details" id="resultDetails"></div>
+                    
+                    <!-- Post-generation options -->
+                    <div class="post-generation-options" id="postGenerationOptions" style="display: none;">
+                        <div class="options-title">Your Preview is Ready!</div>
+                        <div class="preview-info">
+                            <p>🎨 This is your preview - purchase to unlock downloads</p>
+                            <p>📸 High-resolution files optimized for printing at photo labs</p>
+                        </div>
+                        
+                        <!-- Download options (locked) -->
+                        <div class="download-section locked">
+                            <div class="lock-overlay">
+                                <div class="lock-icon">🔒</div>
+                                <p>Purchase to unlock downloads</p>
+                            </div>
+                            <div class="download-buttons">
+                                <button class="download-btn portrait" disabled>
+                                    📄 Portrait (4x6, 8x12)
+                                </button>
+                                <button class="download-btn landscape" disabled>
+                                    🖼️ Landscape (6x4, 12x8)
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Purchase options -->
+                        <div class="purchase-section">
+                            <div class="purchase-title">Choose Your Package:</div>
+                            <div class="purchase-options">
+                                <button class="purchase-btn single" onclick="purchaseProduct('single')">
+                                    🎨 Single Portrait
+                                    <span class="price">$12</span>
+                                    <span class="features">1 style + downloads</span>
+                                </button>
+                                <button class="purchase-btn bundle" onclick="purchaseProduct('bundle')">
+                                    🎭 All 3 Styles
+                                    <span class="price">$24</span>
+                                    <span class="features">3 styles + downloads</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confetti container -->
+    <div class="confetti-container" id="confettiContainer"></div>
+
+    <!-- Confetti popup -->
+    <div class="confetti-popup" id="confettiPopup" style="display: none;">
+        <div class="popup-emoji">✨🎨✨</div>
+        <h3 class="popup-title">WOW! Your Portrait is AMAZING! 🎉</h3>
+        <p class="popup-subtitle">Ready to make it yours?</p>
+        <div class="popup-features">
+            <div class="feature">📸 High-resolution downloads</div>
+            <div class="feature">🖼️ Print-ready formats</div>
+            <div class="feature">💎 No watermarks</div>
+        </div>
+        <button onclick="closeConfettiPopup()" class="popup-button">
+            Let's Do This! 🚀
+        </button>
+    </div>
+
+    <script>
+        let selectedStyle = null;
+        let uploadedImage = null;
+        let generatedImages = {}; // Cache for generated images
+        let generationCount = 0; // Track generation attempts
+
+        // Check for previous purchase on page load
+        window.addEventListener('load', function() {
+            const purchasedProduct = sessionStorage.getItem('purchasedProduct');
+            if (purchasedProduct) {
+                generationCount = 0; // Reset limits for purchased users
+                document.getElementById('generationCount').textContent = '0';
+                showSuccess('🎉 Welcome back! Your purchase allows unlimited generations.');
+                sessionStorage.removeItem('purchasedProduct'); // Clear after use
+            }
+            
+
+        });
+
+        // File upload handling
+        document.getElementById('imageFile').addEventListener('change', handleFileSelect);
+        
+        // Drag and drop
+        const uploadArea = document.querySelector('.upload-area');
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                handleFile(file);
+            }
+        }
+
+        function handleFile(file) {
+            if (!file.type.startsWith('image/')) {
+                showError('Please select an image file.');
+                return;
+            }
+
+            // Compress image before uploading
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+            
+            img.onload = function() {
+                // Calculate new dimensions (max 1024px width/height)
+                const maxSize = 1024;
+                let { width, height } = img;
+                
+                if (width > height) {
+                    if (width > maxSize) {
+                        height = (height * maxSize) / width;
+                        width = maxSize;
+                    }
+                } else {
+                    if (height > maxSize) {
+                        width = (width * maxSize) / height;
+                        height = maxSize;
+                    }
+                }
+                
+                // Set canvas size
+                canvas.width = width;
+                canvas.height = height;
+                
+                // Draw and compress
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                // Convert to data URL with compression
+                uploadedImage = canvas.toDataURL('image/jpeg', 0.8);
+                
+                document.getElementById('previewImage').src = uploadedImage;
+                document.getElementById('previewSection').style.display = 'block';
+                document.getElementById('generateBtn').disabled = false;
+                showSuccess('Image uploaded and compressed successfully! Choose a style above.');
+                
+                console.log('📦 Frontend compression applied:', {
+                    originalSize: file.size,
+                    compressedSize: Math.round(uploadedImage.length * 0.75), // Approximate
+                    reduction: Math.round((1 - (uploadedImage.length * 0.75) / file.size) * 100) + '%'
+                });
+            };
+            
+            img.src = URL.createObjectURL(file);
+        }
+
+        // Style selection
+        document.querySelectorAll('.style-card').forEach(card => {
+            card.addEventListener('click', () => {
+                // Remove previous selection
+                document.querySelectorAll('.style-card').forEach(c => c.classList.remove('selected'));
+                
+                // Add selection to clicked card
+                card.classList.add('selected');
+                selectedStyle = card.dataset.style;
+                
+                // Enable generate button if image is uploaded
+                if (uploadedImage) {
+                    document.getElementById('generateBtn').disabled = false;
+                }
+            });
+        });
+
+        // Generate image
+        document.getElementById('generateBtn').addEventListener('click', generateImage);
+
+        let isGenerating = false;
+
+        async function generateImage() {
+            if (isGenerating) {
+                showError('Please wait, generation in progress...');
+                return;
+            }
+
+            if (!uploadedImage) {
+                showError('Please upload an image first.');
+                return;
+            }
+
+            if (!selectedStyle) {
+                showError('Please select a style.');
+                return;
+            }
+
+            // Check generation limits
+            if (generationCount >= 3) {
+                showError('You have reached the free generation limit (3 per session). Please purchase to continue generating more portraits!');
+                return;
+            }
+
+            // Check if we already have this combination cached
+            const cacheKey = `${uploadedImage.substring(0, 100)}_${selectedStyle}`;
+            if (generatedImages[cacheKey]) {
+                console.log('🎯 Using cached result for:', selectedStyle);
+                document.getElementById('resultImage').src = generatedImages[cacheKey];
+                   document.getElementById('resultDetails').innerHTML = `
+                       <strong>Style:</strong> ${getStyleDisplayName(selectedStyle)}<br>
+                       <strong>Status:</strong> ✅ Cached (Free)
+                   `;
+                document.getElementById('resultSection').style.display = 'block';
+                document.getElementById('postGenerationOptions').style.display = 'block';
+                showConfettiPopup();
+                return;
+            }
+
+            const generateBtn = document.getElementById('generateBtn');
+            const loading = document.getElementById('loading');
+            const resultSection = document.getElementById('resultSection');
+
+            // Show loading and prevent multiple requests
+            isGenerating = true;
+            generateBtn.disabled = true;
+            loading.style.display = 'block';
+            resultSection.style.display = 'none';
+            hideMessages();
+            
+            // Start progress bar animation
+            const progressBar = document.getElementById('progressBar');
+            let progress = 0;
+            
+            // More realistic progress simulation
+            const progressInterval = setInterval(() => {
+                // Slower, more realistic progress
+                progress += Math.random() * 8 + 2; // 2-10% increments
+                if (progress > 85) progress = 85; // Cap at 85% until complete
+                progressBar.style.width = progress + '%';
+            }, 800); // Slower updates (800ms instead of 500ms)
+
+            try {
+                console.log('🚀 Sending request to Fal.ai API...');
+                console.log('🎭 Selected style:', selectedStyle);
+                
+                                   const formData = new FormData();
+                   formData.append('image', dataURLtoFile(uploadedImage, 'pet-image.jpg'));
+                   formData.append('style', selectedStyle);
+                
+                                  const response = await fetch('/api/edit-image', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    console.log('✅ Generation successful:', result);
+                    
+                    // Cache the result
+                    const cacheKey = `${uploadedImage.substring(0, 100)}_${selectedStyle}`;
+                    generatedImages[cacheKey] = result.imageUrl;
+                    generationCount++;
+                    
+                    // Update generation count display
+                    document.getElementById('generationCount').textContent = generationCount;
+                    
+                    document.getElementById('resultImage').src = result.imageUrl;
+                                       document.getElementById('resultDetails').innerHTML = `
+                       <strong>Style:</strong> ${getStyleDisplayName(selectedStyle)}<br>
+                       <strong>Status:</strong> ✅ Complete (${generationCount}/3 free)
+                   `;
+                    
+                    resultSection.style.display = 'block';
+                    document.getElementById('postGenerationOptions').style.display = 'block';
+                    showConfettiPopup();
+                    
+                } else {
+                    console.error('❌ Generation failed:', result);
+                    showError(`Generation failed: ${result.message}`);
+                }
+                
+            } catch (error) {
+                console.error('❌ Request failed:', error);
+                showError(`Request failed: ${error.message}`);
+            } finally {
+                // Complete progress bar with realistic timing
+                const progressBar = document.getElementById('progressBar');
+                
+                // Clear progress interval
+                clearInterval(progressInterval);
+                
+                // Smooth completion animation
+                progressBar.style.width = '100%';
+                
+                // Wait a moment before hiding loading
+                setTimeout(() => {
+                    isGenerating = false;
+                    loading.style.display = 'none';
+                    generateBtn.disabled = false;
+                    
+                    // Reset progress bar after a delay
+                    setTimeout(() => {
+                        progressBar.style.width = '0%';
+                    }, 500);
+                }, 300);
+            }
+        }
+
+        function dataURLtoFile(dataURL, filename) {
+            const arr = dataURL.split(',');
+            const mime = arr[0].match(/:(.*?);/)[1];
+            const bstr = atob(arr[1]);
+            let n = bstr.length;
+            const u8arr = new Uint8Array(n);
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new File([u8arr], filename, { type: mime });
+        }
+
+
+
+        function getStyleDisplayName(style) {
+            const names = {
+                'get-naked': 'Get Naked',
+                'fluff-and-fabulous': 'Fluff & Fabulous',
+                'purr-my-bubbles': 'Purr My Bubbles'
+            };
+            return names[style] || style;
+        }
+
+        function downloadImage() {
+            const link = document.createElement('a');
+            link.href = document.getElementById('resultImage').src;
+            link.download = `pet-portrait-${selectedStyle}.png`;
+            link.click();
+        }
+
+        function showError(message) {
+            const error = document.getElementById('error');
+            error.textContent = message;
+            error.style.display = 'block';
+            setTimeout(() => error.style.display = 'none', 5000);
+        }
+
+        function showSuccess(message) {
+            const success = document.getElementById('success');
+            success.textContent = message;
+            success.style.display = 'block';
+            setTimeout(() => success.style.display = 'none', 5000);
+        }
+
+        function hideMessages() {
+            document.getElementById('error').style.display = 'none';
+            document.getElementById('success').style.display = 'none';
+        }
+
+        // Post-generation functions
+        async function prepareForPrint(orientation) {
+            const loadingBar = document.getElementById(orientation + 'Loading');
+            const downloadBtn = event.target.closest('.download-btn');
+            
+            try {
+                // Show loading animation
+                loadingBar.style.display = 'block';
+                downloadBtn.disabled = true;
+                
+                const imageUrl = document.getElementById('resultImage').src;
+                
+                const response = await fetch('/api/prepare-for-print', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        imageUrl: imageUrl,
+                        orientation: orientation
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Download the processed image
+                    const link = document.createElement('a');
+                    link.href = result.processedImageUrl;
+                    link.download = `pet-portrait-${orientation}-${selectedStyle}.jpg`;
+                    link.click();
+                    
+                    showSuccess(`Downloaded ${orientation} format! 📄`);
+                } else {
+                    throw new Error(result.error || 'Failed to prepare image');
+                }
+                
+            } catch (error) {
+                console.error('Print preparation error:', error);
+                showError(`Failed to prepare image: ${error.message}`);
+            } finally {
+                loadingBar.style.display = 'none';
+                downloadBtn.disabled = false;
+            }
+        }
+
+        async function purchaseProduct(productType) {
+            if (!uploadedImage) {
+                showError('Please upload an image first.');
+                return;
+            }
+
+            if (!selectedStyle && productType === 'single') {
+                showError('Please select a style for single portrait.');
+                return;
+            }
+
+            try {
+                console.log('Sending checkout request:', {
+                    productType,
+                    style: selectedStyle || 'get-naked',
+                    imageUrlLength: uploadedImage ? uploadedImage.length : 0
+                });
+
+                const response = await fetch('/api/checkout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        imageUrl: uploadedImage,
+                        style: selectedStyle || 'get-naked',
+                        productType: productType
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Checkout response error:', errorText);
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                console.log('Checkout response:', result);
+                
+                if (result.success && result.url) {
+                    // Store purchase info in session storage
+                    sessionStorage.setItem('purchasedProduct', productType);
+                    sessionStorage.setItem('purchasedImage', uploadedImage);
+                    sessionStorage.setItem('purchasedStyle', selectedStyle || 'get-naked');
+                    
+                    // Redirect to Stripe checkout
+                    window.location.href = result.url;
+                } else {
+                    throw new Error(result.error || 'Failed to create checkout session');
+                }
+                
+            } catch (error) {
+                console.error('Checkout error:', error);
+                showError(`Checkout failed: ${error.message}`);
+            }
+        }
+
+        // Confetti functions
+        function showConfettiPopup() {
+            const popup = document.getElementById('confettiPopup');
+            const container = document.getElementById('confettiContainer');
+            
+            // Show popup
+            popup.style.display = 'block';
+            
+            // Create confetti
+            createConfetti(container);
+            
+            // Auto-hide after 4 seconds
+            setTimeout(() => {
+                closeConfettiPopup();
+            }, 4000);
+        }
+
+        function closeConfettiPopup() {
+            const popup = document.getElementById('confettiPopup');
+            const container = document.getElementById('confettiContainer');
+            
+            popup.style.display = 'none';
+            container.innerHTML = '';
+        }
+
+        function createConfetti(container) {
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3', '#54a0ff', '#ffd93d', '#ff6b9d', '#4ecdc4'];
+            
+            // Get popup position to explode from behind it
+            const popup = document.getElementById('confettiPopup');
+            const popupRect = popup.getBoundingClientRect();
+            const centerX = popupRect.left + popupRect.width / 2;
+            const centerY = popupRect.top + popupRect.height / 2;
+            
+            // Create explosion effect
+            for (let i = 0; i < 200; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                
+                // Position confetti at popup center
+                confetti.style.left = centerX + 'px';
+                confetti.style.top = centerY + 'px';
+                confetti.style.position = 'fixed';
+                
+                // Random sizes for variety
+                const size = Math.random() * 20 + 6;
+                confetti.style.width = size + 'px';
+                confetti.style.height = size + 'px';
+                
+                // Random colors
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Calculate explosion direction
+                const angle = (Math.PI * 2 * i) / 200;
+                const distance = 50 + Math.random() * 100;
+                const x = Math.cos(angle) * distance;
+                const y = Math.sin(angle) * distance;
+                
+                // Set CSS custom properties for animation
+                confetti.style.setProperty('--x', x + 'px');
+                confetti.style.setProperty('--y', y + 'px');
+                
+                // Random animation delays
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                confetti.style.animationDuration = (Math.random() * 1 + 2) + 's';
+                
+                // Different shapes
+                if (Math.random() > 0.5) {
+                    confetti.style.borderRadius = '50%';
+                } else {
+                    confetti.style.borderRadius = '2px';
+                }
+                
+                container.appendChild(confetti);
+                
+                // Remove confetti after animation
+                setTimeout(() => {
+                    if (confetti.parentNode) {
+                        confetti.parentNode.removeChild(confetti);
+                    }
+                }, 5000);
+            }
+        }
+    </script>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">🎨 Artzyful</div>
+                <p class="footer-tagline">Transform your pet into a vintage masterpiece</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Connect With Us</h4>
+                <div class="social-links">
+                    <a href="#" class="social-link" title="Instagram">
+                        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-link" title="Facebook">
+                        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-link" title="Twitter">
+                        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-link" title="Pinterest">
+                        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24.009c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641.001 12.017.001z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">How It Works</a>
+                    <a href="#" class="footer-link">Style Gallery</a>
+                    <a href="#" class="footer-link">Pricing</a>
+                    <a href="#" class="footer-link">Contact</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="footer-bottom-content">
+                <p class="copyright">© 2024 Artzyful. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="#" class="footer-bottom-link">Privacy Policy</a>
+                    <a href="#" class="footer-bottom-link">Terms of Service</a>
+                    <a href="/admin-login.html" class="footer-bottom-link admin-link">🔧 Admin</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html> 

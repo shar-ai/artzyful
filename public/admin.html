@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artzyful Admin Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 30px;
+            border: 2px solid #f0f0f0;
+            border-radius: 15px;
+            background: #fafafa;
+        }
+
+        .section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .prompt-section {
+            background: #fff;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .prompt-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-right: 15px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-success {
+            background: #28a745;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-weight: 600;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .site-content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .file-upload {
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .file-upload:hover {
+            border-color: #667eea;
+        }
+
+        .file-upload input {
+            display: none;
+        }
+
+        .preview-image {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        /* Footer Styles */
+        .footer {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            margin-top: 60px;
+            border-radius: 20px 20px 0 0;
+            overflow: hidden;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .footer-section h4 {
+            color: #ecf0f1;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .footer-tagline {
+            color: #bdc3c7;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-link {
+            color: #bdc3c7;
+            text-decoration: none;
+            padding: 8px 0;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+        }
+
+        .footer-link:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+            padding-left: 10px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #bdc3c7;
+            text-decoration: none;
+            padding: 12px;
+            transition: all 0.3s ease;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            width: 50px;
+            height: 50px;
+        }
+
+        .social-link:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .social-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        .footer-bottom {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-bottom-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .copyright {
+            color: #95a5a6;
+            font-size: 0.9rem;
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-bottom-link {
+            color: #95a5a6;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .footer-bottom-link:hover {
+            color: #667eea;
+        }
+
+        .admin-link {
+            opacity: 0.6;
+            font-size: 0.8rem;
+        }
+
+        .admin-link:hover {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .footer-bottom-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-bottom-links {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎨 Artzyful Admin Dashboard</h1>
+            <p>Manage prompts, site content, and branding</p>
+        </div>
+
+        <div class="content">
+            <div class="section">
+                <h2>📝 AI Prompts</h2>
+                <p>Customize the prompts used for each style. These control how the AI transforms your pet's photos.</p>
+                
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                    <h3 style="margin-bottom: 15px; color: #333;">🧪 Test Image</h3>
+                    <p style="margin-bottom: 15px; color: #666;">Upload a custom image to test your prompts with:</p>
+                    <div class="file-upload" onclick="document.getElementById('testImageFile').click()" style="max-width: 300px;">
+                        <input type="file" id="testImageFile" accept="image/*" onchange="handleTestImageUpload(this)">
+                        <p>📁 Click to upload test image</p>
+                        <img id="testImagePreview" class="preview-image" style="display: none;">
+                    </div>
+                </div>
+                
+                <div id="promptsContainer">
+                    <!-- Prompts will be loaded here -->
+                </div>
+
+                <button class="btn btn-success" onclick="savePrompts()">💾 Save Prompts</button>
+                <button class="btn btn-secondary" onclick="resetPrompts()">🔄 Reset to Defaults</button>
+                <button class="btn" onclick="testPrompts()" style="background: #ff6b6b;">🧪 Test All Prompts</button>
+            </div>
+
+
+
+            <div class="section">
+                <h2>🎨 Site Content</h2>
+                <p>Customize the website content, titles, and branding.</p>
+                
+                <div class="site-content-grid">
+                    <div class="form-group">
+                        <label>Hero Title</label>
+                        <input type="text" id="heroTitle" placeholder="Transform Your Pet Into Art">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Hero Subtitle</label>
+                        <input type="text" id="heroSubtitle" placeholder="Upload your pet's photo and choose from our vintage-inspired styles">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Logo URL</label>
+                        <input type="text" id="logo" placeholder="/images/logo.png">
+                        <div class="file-upload" onclick="document.getElementById('logoFile').click()">
+                            <input type="file" id="logoFile" accept="image/*" onchange="handleLogoUpload(this)">
+                            <p>📁 Click to upload logo</p>
+                            <img id="logoPreview" class="preview-image" style="display: none;">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Hero Banner URL</label>
+                        <input type="text" id="heroImage" placeholder="/images/hero-banner.jpg">
+                        <div class="file-upload" onclick="document.getElementById('heroFile').click()">
+                            <input type="file" id="heroFile" accept="image/*" onchange="handleHeroUpload(this)">
+                            <p>📁 Click to upload hero banner</p>
+                            <img id="heroPreview" class="preview-image" style="display: none;">
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 30px; color: #333;">Style Names & Descriptions</h3>
+                
+                <div class="site-content-grid">
+                    <div class="form-group">
+                        <label>Get Naked - Display Name</label>
+                        <input type="text" id="styleName1" placeholder="Get Naked">
+                    </div>
+                    <div class="form-group">
+                        <label>Get Naked - Description</label>
+                        <input type="text" id="styleDesc1" placeholder="Spa day vibes with fluffy towels">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Fluff & Fabulous - Display Name</label>
+                        <input type="text" id="styleName2" placeholder="Fluff & Fabulous">
+                    </div>
+                    <div class="form-group">
+                        <label>Fluff & Fabulous - Description</label>
+                        <input type="text" id="styleDesc2" placeholder="Glamorous bathtub luxury">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Purr My Bubbles - Display Name</label>
+                        <input type="text" id="styleName3" placeholder="Purr My Bubbles">
+                    </div>
+                    <div class="form-group">
+                        <label>Purr My Bubbles - Description</label>
+                        <input type="text" id="styleDesc3" placeholder="Bubble bath fun with rubber duck">
+                    </div>
+                </div>
+
+                <button class="btn btn-success" onclick="saveSiteContent()">💾 Save Site Content</button>
+                <button class="btn btn-secondary" onclick="resetSiteContent()">🔄 Reset to Defaults</button>
+            </div>
+
+            <div id="message"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">🎨 Artzyful</div>
+                <p class="footer-tagline">Admin Dashboard</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Quick Actions</h4>
+                <div class="footer-links">
+                    <a href="/pet-styles.html" class="footer-link">← Back to Main Site</a>
+                    <a href="#" class="footer-link">View Analytics</a>
+                    <a href="#" class="footer-link">Export Data</a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Connect With Us</h4>
+                <div class="social-links">
+                    <a href="#" class="social-link" title="Instagram">
+                        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-link" title="Facebook">
+                        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-link" title="Twitter">
+                        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-link" title="Pinterest">
+                        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24.009c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641.001 12.017.001z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Support</h4>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Documentation</a>
+                    <a href="#" class="footer-link">Contact Support</a>
+                    <a href="#" class="footer-link">System Status</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="footer-bottom-content">
+                <p class="copyright">© 2024 Artzyful. Admin Dashboard</p>
+                <div class="footer-bottom-links">
+                    <a href="#" class="footer-bottom-link">Privacy Policy</a>
+                    <a href="#" class="footer-bottom-link">Terms of Service</a>
+                    <button onclick="logout()" class="footer-bottom-link admin-link">🚪 Logout</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let currentData = {};
+        let customTestImage = null;
+        let currentModels = {};
+
+        // Authentication functions
+        function checkAuth() {
+            const isAuthenticated = sessionStorage.getItem('adminAuthenticated');
+            const loginTime = sessionStorage.getItem('adminLoginTime');
+            
+            if (!isAuthenticated || !loginTime) {
+                redirectToLogin();
+                return;
+            }
+            
+            // Check if login is still valid (8 hours)
+            const now = Date.now();
+            const loginTimestamp = parseInt(loginTime);
+            const eightHours = 8 * 60 * 60 * 1000;
+            
+            if (now - loginTimestamp >= eightHours) {
+                // Session expired
+                sessionStorage.removeItem('adminAuthenticated');
+                sessionStorage.removeItem('adminLoginTime');
+                redirectToLogin();
+                return;
+            }
+            
+            // Add logout button
+            addLogoutButton();
+        }
+        
+        function redirectToLogin() {
+            window.location.href = '/admin-login.html';
+        }
+        
+        function logout() {
+            sessionStorage.removeItem('adminAuthenticated');
+            sessionStorage.removeItem('adminLoginTime');
+            redirectToLogin();
+        }
+        
+        function addLogoutButton() {
+            const header = document.querySelector('.header');
+            if (header && !document.getElementById('logoutBtn')) {
+                const logoutBtn = document.createElement('button');
+                logoutBtn.id = 'logoutBtn';
+                logoutBtn.innerHTML = '🚪 Logout';
+                logoutBtn.className = 'btn';
+                logoutBtn.style.cssText = 'background: #ff6b6b; margin-left: auto;';
+                logoutBtn.onclick = logout;
+                header.appendChild(logoutBtn);
+            }
+        }
+
+        // Load data on page load
+        window.addEventListener('load', function() {
+            // Check authentication first
+            checkAuth();
+            loadData();
+            loadModels();
+            
+            // Load saved model selection
+            const savedModelId = localStorage.getItem('selectedModelId');
+            if (savedModelId) {
+                selectedModelId = savedModelId;
+            }
+        });
+
+        async function loadData() {
+            try {
+                const response = await fetch('/api/admin/prompts');
+                const data = await response.json();
+                currentData = data;
+                
+                populatePrompts(data.prompts);
+                populateSiteContent(data.siteContent);
+                
+                showMessage('✅ Data loaded successfully', 'success');
+            } catch (error) {
+                showMessage('❌ Failed to load data: ' + error.message, 'error');
+            }
+        }
+
+        function populatePrompts(prompts) {
+            const container = document.getElementById('promptsContainer');
+            container.innerHTML = '';
+            
+                            Object.entries(prompts).forEach(([style, prompt]) => {
+                    const section = document.createElement('div');
+                    section.className = 'prompt-section';
+                    section.innerHTML = `
+                        <h3>${getStyleDisplayName(style)}</h3>
+                        <div class="form-group">
+                            <label>AI Prompt:</label>
+                            <textarea id="prompt_${style}" placeholder="Enter the AI prompt for this style...">${prompt}</textarea>
+                        </div>
+                        <button class="btn" onclick="testSinglePrompt('${style}')" style="background: #ff6b6b; margin-top: 10px;">🧪 Test This Prompt</button>
+                    `;
+                    container.appendChild(section);
+                });
+        }
+
+        function populateSiteContent(content) {
+            document.getElementById('heroTitle').value = content.heroTitle || '';
+            document.getElementById('heroSubtitle').value = content.heroSubtitle || '';
+            document.getElementById('logo').value = content.logo || '';
+            document.getElementById('heroImage').value = content.heroImage || '';
+            
+            document.getElementById('styleName1').value = content.styleNames?.['get-naked'] || '';
+            document.getElementById('styleDesc1').value = content.styleDescriptions?.['get-naked'] || '';
+            document.getElementById('styleName2').value = content.styleNames?.['fluff-and-fabulous'] || '';
+            document.getElementById('styleDesc2').value = content.styleDescriptions?.['fluff-and-fabulous'] || '';
+            document.getElementById('styleName3').value = content.styleNames?.['purr-my-bubbles'] || '';
+            document.getElementById('styleDesc3').value = content.styleDescriptions?.['purr-my-bubbles'] || '';
+        }
+
+        async function savePrompts() {
+            try {
+                const prompts = {};
+                Object.keys(currentData.prompts).forEach(style => {
+                    prompts[style] = document.getElementById(`prompt_${style}`).value;
+                });
+                
+                const response = await fetch('/api/admin/prompts', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompts })
+                });
+                
+                if (response.ok) {
+                    showMessage('✅ Prompts saved successfully!', 'success');
+                } else {
+                    throw new Error('Failed to save prompts');
+                }
+            } catch (error) {
+                showMessage('❌ Failed to save prompts: ' + error.message, 'error');
+            }
+        }
+
+        async function saveSiteContent() {
+            try {
+                const siteContent = {
+                    heroTitle: document.getElementById('heroTitle').value,
+                    heroSubtitle: document.getElementById('heroSubtitle').value,
+                    logo: document.getElementById('logo').value,
+                    heroImage: document.getElementById('heroImage').value,
+                    styleNames: {
+                        'get-naked': document.getElementById('styleName1').value,
+                        'fluff-and-fabulous': document.getElementById('styleName2').value,
+                        'purr-my-bubbles': document.getElementById('styleName3').value
+                    },
+                    styleDescriptions: {
+                        'get-naked': document.getElementById('styleDesc1').value,
+                        'fluff-and-fabulous': document.getElementById('styleDesc2').value,
+                        'purr-my-bubbles': document.getElementById('styleDesc3').value
+                    }
+                };
+                
+                const response = await fetch('/api/admin/prompts', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ siteContent })
+                });
+                
+                if (response.ok) {
+                    showMessage('✅ Site content saved successfully!', 'success');
+                } else {
+                    throw new Error('Failed to save site content');
+                }
+            } catch (error) {
+                showMessage('❌ Failed to save site content: ' + error.message, 'error');
+            }
+        }
+
+        function resetPrompts() {
+            if (confirm('Are you sure you want to reset all prompts to defaults?')) {
+                populatePrompts(currentData.prompts);
+                showMessage('🔄 Prompts reset to defaults', 'success');
+            }
+        }
+
+        function resetSiteContent() {
+            if (confirm('Are you sure you want to reset all site content to defaults?')) {
+                populateSiteContent(currentData.siteContent);
+                showMessage('🔄 Site content reset to defaults', 'success');
+            }
+        }
+
+        function getStyleDisplayName(style) {
+            const names = {
+                'get-naked': 'Get Naked',
+                'fluff-and-fabulous': 'Fluff & Fabulous',
+                'purr-my-bubbles': 'Purr My Bubbles'
+            };
+            return names[style] || style;
+        }
+
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}`;
+            
+            setTimeout(() => {
+                messageDiv.textContent = '';
+                messageDiv.className = 'message';
+            }, 5000);
+        }
+
+        function handleLogoUpload(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('logoPreview').src = e.target.result;
+                    document.getElementById('logoPreview').style.display = 'block';
+                    document.getElementById('logo').value = '/images/logo.png';
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function handleHeroUpload(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('heroPreview').src = e.target.result;
+                    document.getElementById('heroPreview').style.display = 'block';
+                    document.getElementById('heroImage').value = '/images/hero-banner.jpg';
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function handleTestImageUpload(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    customTestImage = e.target.result;
+                    document.getElementById('testImagePreview').src = e.target.result;
+                    document.getElementById('testImagePreview').style.display = 'block';
+                    showMessage('✅ Test image uploaded!', 'success');
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Test prompts functionality
+        async function testPrompts() {
+            const testImage = customTestImage || 'https://storage.googleapis.com/falserverless/example_inputs/seededit.jpg';
+            
+            showMessage('🧪 Testing prompts with sample image...', 'success');
+            
+            const prompts = {};
+            Object.keys(currentData.prompts).forEach(style => {
+                prompts[style] = document.getElementById(`prompt_${style}`).value;
+            });
+            
+            const results = [];
+            
+            for (const [style, prompt] of Object.entries(prompts)) {
+                try {
+                    showMessage(`🎨 Testing ${getStyleDisplayName(style)} with SeedEdit v3...`, 'success');
+                    
+                    const formData = new FormData();
+                    formData.append('image', dataURLtoFile(testImage, 'test-image.jpg'));
+                    formData.append('style', style);
+                    
+                    const response = await fetch('/api/edit-image', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        results.push({
+                            style: getStyleDisplayName(style),
+                            success: true,
+                            imageUrl: result.imageUrl,
+                            prompt: prompt
+                        });
+                    } else {
+                        results.push({
+                            style: getStyleDisplayName(style),
+                            success: false,
+                            error: `HTTP ${response.status}`
+                        });
+                    }
+                } catch (error) {
+                    results.push({
+                        style: getStyleDisplayName(style),
+                        success: false,
+                        error: error.message
+                    });
+                }
+            }
+            
+            showTestResults(results);
+        }
+
+        function showTestResults(results) {
+            console.log('🎭 Showing batch test results:', results);
+            
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.8);
+                z-index: 1000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+            `;
+            
+            const content = document.createElement('div');
+            content.style.cssText = `
+                background: white;
+                border-radius: 20px;
+                padding: 30px;
+                max-width: 800px;
+                max-height: 80vh;
+                overflow-y: auto;
+                position: relative;
+            `;
+            
+            let html = `
+                <h2 style="margin-bottom: 20px; color: #333;">🧪 Prompt Test Results</h2>
+                <button onclick="this.parentElement.parentElement.remove()" style="position: absolute; top: 15px; right: 15px; background: #ff6b6b; color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer;">×</button>
+            `;
+            
+            results.forEach(result => {
+                console.log('🖼️ Result for', result.style, ':', result);
+                if (result.success) {
+                    html += `
+                        <div style="border: 2px solid #28a745; border-radius: 10px; padding: 20px; margin-bottom: 20px;">
+                            <h3 style="color: #28a745; margin-bottom: 10px;">✅ ${result.style}</h3>
+                            <div style="background: #f0f0f0; padding: 8px; border-radius: 5px; margin-bottom: 8px; font-size: 11px;">
+                                <strong>Debug:</strong> URL length: ${result.imageUrl ? result.imageUrl.length : 'undefined'} | Type: ${result.imageUrl ? (result.imageUrl.startsWith('data:') ? 'data URL' : 'external URL') : 'undefined'}
+                            </div>
+                            <img src="${result.imageUrl}" style="max-width: 200px; border-radius: 10px; margin-bottom: 10px; border: 2px solid #ddd;" 
+                                 onload="console.log('🖼️ Image loaded successfully for ${result.style}'); this.style.borderColor='#28a745';" 
+                                 onerror="console.log('❌ Image failed to load for ${result.style}:', this.src); this.style.borderColor='#dc3545'; this.alt='Image failed to load';">
+                            <div style="background: #f8f9fa; padding: 10px; border-radius: 5px; font-size: 0.9rem;">
+                                <strong>Prompt:</strong><br>
+                                ${result.prompt}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    html += `
+                        <div style="border: 2px solid #dc3545; border-radius: 10px; padding: 20px; margin-bottom: 20px;">
+                            <h3 style="color: #dc3545; margin-bottom: 10px;">❌ ${result.style}</h3>
+                            <p style="color: #dc3545;">Error: ${result.error}</p>
+                        </div>
+                    `;
+                }
+            });
+            
+            content.innerHTML = html;
+            modal.appendChild(content);
+            document.body.appendChild(modal);
+        }
+
+        // Fixed model - Flux Pro Kontext
+        const selectedModelId = 'fal-ai/flux-pro/kontext';
+
+        function dataURLtoFile(dataurl, filename) {
+            const arr = dataurl.split(',');
+            const mime = arr[0].match(/:(.*?);/)[1];
+            const bstr = atob(arr[1]);
+            let n = bstr.length;
+            const u8arr = new Uint8Array(n);
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new File([u8arr], filename, { type: mime });
+        }
+
+        // Models management functions
+        async function loadModels() {
+            try {
+                console.log('🔄 Loading models from API...');
+                const response = await fetch('/api/models');
+                console.log('📡 Response status:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                console.log('📊 Models data received:', Object.keys(data.models || {}).length, 'models');
+                
+                currentModels = data.models || {};
+                console.log('💾 Current models set:', Object.keys(currentModels).length, 'models');
+                
+
+                console.log('✅ Models loaded and dropdown populated successfully');
+            } catch (error) {
+                console.error('❌ Failed to load models:', error);
+                showMessage(`Failed to load models: ${error.message}`, 'error');
+            }
+        }
+
+
+
+
+
+        async function testSinglePrompt(style) {
+            const testImage = customTestImage || 'https://storage.googleapis.com/falserverless/example_inputs/seededit.jpg';
+            const prompt = document.getElementById(`prompt_${style}`).value;
+            
+            showMessage(`🧪 Testing ${getStyleDisplayName(style)} with SeedEdit v3...`, 'success');
+            
+            try {
+                const response = await fetch('/api/edit-image', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        imageUrl: testImage,
+                        style: style
+                    })
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log('✅ API call successful:', result);
+                    showSingleTestResult({
+                        style: getStyleDisplayName(style),
+                        success: true,
+                        imageUrl: result.imageUrl,
+                        prompt: prompt
+                    });
+                } else {
+                    const errorText = await response.text();
+                    console.error('❌ API call failed:', response.status, errorText);
+                    showSingleTestResult({
+                        style: getStyleDisplayName(style),
+                        success: false,
+                        error: `HTTP ${response.status}: ${errorText}`
+                    });
+                }
+            } catch (error) {
+                console.error('❌ API call error:', error);
+                showSingleTestResult({
+                    style: getStyleDisplayName(style),
+                    success: false,
+                    error: error.message
+                });
+            }
+        }
+
+        function showSingleTestResult(result) {
+            console.log('🎭 Showing test result:', result);
+            console.log('🖼️ Image URL:', result.imageUrl);
+            
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.9);
+                z-index: 1000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+                overflow-y: auto;
+            `;
+            
+            const content = document.createElement('div');
+            content.style.cssText = `
+                background: white;
+                border-radius: 20px;
+                padding: 30px;
+                max-width: 800px;
+                width: 90%;
+                text-align: center;
+                position: relative;
+                max-height: 90vh;
+                overflow-y: auto;
+            `;
+            
+            let html = `
+                <h2 style="margin-bottom: 20px; color: #333;">🧪 Test Result: ${result.style}</h2>
+                <button onclick="this.parentElement.parentElement.remove()" style="position: absolute; top: 15px; right: 15px; background: #ff6b6b; color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-size: 18px;">×</button>
+            `;
+            
+            if (result.success) {
+                html += `
+                    <div style="border: 3px solid #28a745; border-radius: 15px; padding: 25px; margin-bottom: 20px; background: #f8fff8;">
+                        <h3 style="color: #28a745; margin-bottom: 20px; font-size: 24px;">✅ Success!</h3>
+                        
+                        <div style="background: #f0f0f0; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-size: 12px; text-align: left;">
+                            <strong>Debug Info:</strong><br>
+                            Image URL length: ${result.imageUrl ? result.imageUrl.length : 'undefined'}<br>
+                            Image URL starts with: ${result.imageUrl ? result.imageUrl.substring(0, 50) + '...' : 'undefined'}<br>
+                            Image URL type: ${result.imageUrl ? (result.imageUrl.startsWith('data:') ? 'data URL' : 'external URL') : 'undefined'}
+                        </div>
+                        
+                        <div style="background: #fff; border: 2px solid #ddd; border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                            <h4 style="margin-bottom: 15px; color: #333;">Generated Image Preview:</h4>
+                            <img src="${result.imageUrl}" 
+                                 style="max-width: 100%; max-height: 400px; border-radius: 10px; border: 3px solid #ddd; box-shadow: 0 2px 10px rgba(0,0,0,0.1);" 
+                                 onload="console.log('🖼️ Image loaded successfully for ${result.style}'); this.style.borderColor='#28a745'; this.style.boxShadow='0 2px 15px rgba(40,167,69,0.3)';" 
+                                 onerror="console.log('❌ Image failed to load for ${result.style}:', this.src); this.style.borderColor='#dc3545'; this.style.boxShadow='0 2px 15px rgba(220,53,69,0.3)'; this.alt='Image failed to load'; this.style.background='#f8d7da'; this.style.padding='20px'; this.style.color='#721c24';">
+                        </div>
+                        
+                        <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; text-align: left; border-left: 4px solid #28a745;">
+                            <strong style="color: #28a745; font-size: 16px;">Prompt Used:</strong><br>
+                            <p style="margin-top: 10px; line-height: 1.5; color: #555;">${result.prompt}</p>
+                        </div>
+                        
+                        <div style="margin-top: 20px; padding: 15px; background: #e8f5e8; border-radius: 8px; border: 1px solid #28a745;">
+                            <p style="margin: 0; color: #155724; font-weight: 600;">✅ Image generated successfully! You can now save this prompt to the frontend.</p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                html += `
+                    <div style="border: 3px solid #dc3545; border-radius: 15px; padding: 25px; margin-bottom: 20px; background: #fff5f5;">
+                        <h3 style="color: #dc3545; margin-bottom: 15px; font-size: 24px;">❌ Failed</h3>
+                        <p style="color: #dc3545; font-size: 16px;">Error: ${result.error}</p>
+                        <div style="margin-top: 15px; padding: 15px; background: #f8d7da; border-radius: 8px; border: 1px solid #dc3545;">
+                            <p style="margin: 0; color: #721c24;">❌ Please check the error and try again.</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            content.innerHTML = html;
+            modal.appendChild(content);
+            document.body.appendChild(modal);
+            
+            // Add click outside to close
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+        }
+    </script>
+</body>
+</html> 
