@@ -1,25 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-07-30.basil',
-});
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(request: NextRequest) {
   try {
-    if (!process.env.STRIPE_SECRET_KEY) {
-      return NextResponse.json(
-        { error: 'Stripe secret key not configured' },
-        { status: 500 }
-      );
-    }
-
-    const { sessionId } = await request.json();
+    const body = await request.json();
+    const { sessionId } = body;
 
     if (!sessionId) {
       return NextResponse.json(
-        { error: 'Session ID is required' },
-        { status: 400 }
+        { status: 'error', message: 'sessionId is required' },
+        { status: 400, headers: { 'Access-Control-Allow-Origin': '*' } }
       );
     }
 
@@ -28,36 +20,37 @@ export async function POST(request: NextRequest) {
 
     if (!session) {
       return NextResponse.json(
-        { error: 'Session not found' },
-        { status: 404 }
+        { status: 'error', message: 'Session not found' },
+        { status: 404, headers: { 'Access-Control-Allow-Origin': '*' } }
       );
     }
 
-    // Verify payment status
-    if (session.payment_status !== 'paid') {
-      return NextResponse.json(
-        { error: 'Payment not completed' },
-        { status: 402 }
-      );
-    }
-
-    return NextResponse.json({
-      success: true,
-      session: {
-        id: session.id,
-        amount_total: session.amount_total,
-        currency: session.currency,
-        payment_status: session.payment_status,
-        metadata: session.metadata,
-        created: session.created
+    return NextResponse.json(
+      { 
+        status: 'success', 
+        session: {
+          id: session.id,
+          payment_status: session.payment_status,
+          metadata: session.metadata
+        }
+      },
+      { 
+        headers: { 'Access-Control-Allow-Origin': '*' } 
       }
-    });
+    );
 
   } catch (error) {
-    console.error('Get session error:', error);
+    console.error('❌ Get session failed:', error);
     return NextResponse.json(
-      { error: 'Failed to retrieve session' },
-      { status: 500 }
+      { 
+        status: 'error', 
+        message: error instanceof Error ? error.message : 'Failed to get session',
+        details: error
+      },
+      { 
+        status: 500, 
+        headers: { 'Access-Control-Allow-Origin': '*' } 
+      }
     );
   }
 }
