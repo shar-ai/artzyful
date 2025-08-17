@@ -3,7 +3,7 @@ import Stripe from 'stripe';
 import sharp from 'sharp';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2023-07-30',
+  apiVersion: '2025-07-30.basil',
 });
 
 export async function POST(request: NextRequest) {
