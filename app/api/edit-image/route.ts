@@ -291,7 +291,9 @@ export async function POST(request: NextRequest) {
         
         console.log('✅ Fal.ai API call successful');
         console.log('🖼️ Result data:', JSON.stringify(result, null, 2));
-        console.log('🖼️ Generated image URL:', result.data?.image?.url);
+        
+        // Flux Pro Kontext returns images array
+        console.log('🖼️ Generated image URL (Flux Pro):', result.data?.images?.[0]?.url);
         
       } catch (falError) {
         console.error('❌ Fal.ai API call failed:', falError);
