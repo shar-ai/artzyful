@@ -1277,13 +1277,61 @@
                 console.log('🚀 Sending request to Fal.ai API...');
                 console.log('🎭 Selected style:', selectedStyle);
                 
-                                   const formData = new FormData();
-                   formData.append('image', dataURLtoFile(uploadedImage, 'pet-image.jpg'));
-                   formData.append('style', selectedStyle);
+                // Convert uploaded image to a hosted URL or use as data URL
+                const imageUrl = uploadedImage;
+                
+                const response = await fetch("/api/edit-image", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        imageUrl: imageUrl,
+                        style: selectedStyle
+                    })
+                });
+                // Convert uploaded image to a hosted URL or use as data URL
+                const imageUrl = uploadedImage;
+                
+                const response = await fetch("/api/edit-image", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        imageUrl: imageUrl,
+                        style: selectedStyle
+                    })
+                });
+                // Convert uploaded image to a hosted URL or use as data URL
+                const imageUrl = uploadedImage;
+                
+                const response = await fetch("/api/edit-image", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        imageUrl: imageUrl,
+                        style: selectedStyle
+                    })
+                });
                 
                                   const response = await fetch('/api/edit-image', {
                     method: 'POST',
-                    body: formData
+                // Convert uploaded image to a hosted URL or use as data URL
+                const imageUrl = uploadedImage;
+                
+                const response = await fetch("/api/edit-image", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        imageUrl: imageUrl,
+                        style: selectedStyle
+                    })
+                });
                 });
 
                 if (!response.ok) {
